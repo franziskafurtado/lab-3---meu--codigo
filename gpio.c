@@ -2,6 +2,11 @@
 #include "tm4c1294ncpdt.h"
 
 #define GPIO_PORTH  (0x80) //bit 8
+#define GPIO_PORTA  (0x1) //bit 1
+#define GPIO_PORTE  (0x10) //bit 5
+#define GPIO_PORTF  (0x20) //bit 6
+
+// aqui ta as config do UART, GPIO e Leds, ver oq falta do motor 
 
 void timer_init(void);
 void SysTick_Wait1ms(uint32_t delay);
@@ -18,7 +23,7 @@ uint32_t leTeclado(void);
 void ligaLed(uint8_t leds);
 void EscreveCaracter(char carac);
 void EnviaComando1640(uint32_t);
-
+uint32_t aux;
 int8_t aborted, running = 0;
 
 void timer_init(void){
@@ -36,6 +41,45 @@ void timer_init(void){
 	NVIC_PRI5_R = 4 << 29;
 	NVIC_EN0_R = 1 << 23;
 	TIMER2_CTL_R = TIMER2_CTL_R | 0x1;
+}
+
+
+void ConfigUART(void){
+	
+		//Configura UART
+		//Inicia clock UART0
+		SYSCTL_RCGCUART_R = 0x1;
+		
+		while((SYSCTL_PRUART_R & 0x1) != 0x1){}
+			
+		UART0_CTL_R = UART0_CTL_R & 0xFFFFFFFE;
+			
+		UART0_IBRD_R = 520;
+		UART0_FBRD_R = 0;
+			
+		UART0_LCRH_R = (0x3 << 5)|(0x1<<4);
+		UART0_CC_R = 0x0;
+			
+		UART0_CTL_R = (0x1 << 9)|(0x1 << 8)|0x1;
+			
+			
+		//Configura GPIO	
+		SYSCTL_RCGCGPIO_R = SYSCTL_RCGCGPIO_R | GPIO_PORTA | GPIO_PORTF | GPIO_PORTE;
+			
+		while((SYSCTL_RCGCGPIO_R & (GPIO_PORTA|GPIO_PORTF|GPIO_PORTE) )!=(GPIO_PORTA|GPIO_PORTF|GPIO_PORTE)){}
+			
+		//GPIO UART
+		GPIO_PORTA_AHB_AMSEL_R = 0x00;
+			
+		aux = GPIO_PORTA_AHB_PCTL_R & 0xFFFFFF00;
+		GPIO_PORTA_AHB_PCTL_R = aux | 0x11;
+			
+		aux = GPIO_PORTA_AHB_AFSEL_R & 0xFFFFFF00;
+		GPIO_PORTA_AHB_AFSEL_R = aux | 0x3;
+			
+		aux = GPIO_PORTA_AHB_DEN_R & 0xFFFFFF00;
+		GPIO_PORTA_AHB_DEN_R = aux | 0x3;
+
 }
 
 void PortN_Invertepino0(void){
