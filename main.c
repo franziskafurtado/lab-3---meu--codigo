@@ -21,7 +21,12 @@ extern int8_t aborted;
 extern int8_t running; 
 
 	// Configuração Putty:
-	// Speed(baud): 115200, serial
+	// Menu Serial -> 
+	// Speed(baud): 115200 
+	// Data bits:8 
+	// Stop bits: 1
+	// Menu Session ->
+	// Serial
 	
 int main(void){
 	
