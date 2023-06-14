@@ -37,18 +37,6 @@ GPIO_PORTM_AHB_DEN_R     	EQU    0x4006351C
 GPIO_PORTM_AHB_PUR_R     	EQU    0x40063510	
 GPIO_PORTM_AHB_DATA_R    	EQU    0x400633FC
 GPIO_PORTM               	EQU    2_000100000000000	
-	
-; PORT A
-GPIO_PORTA_AHB_LOCK_R    	EQU    0x40058520
-GPIO_PORTA_AHB_CR_R      	EQU    0x40058524
-GPIO_PORTA_AHB_AMSEL_R   	EQU    0x40058528
-GPIO_PORTA_AHB_PCTL_R    	EQU    0x4005852C
-GPIO_PORTA_AHB_DIR_R     	EQU    0x40058400
-GPIO_PORTA_AHB_AFSEL_R   	EQU    0x40058420
-GPIO_PORTA_AHB_DEN_R     	EQU    0x4005851C
-GPIO_PORTA_AHB_PUR_R     	EQU    0x40058510	
-GPIO_PORTA_AHB_DATA_R    	EQU    0x400583FC
-GPIO_PORTA               	EQU    2_000000000000001
 
 ; PORT Q
 GPIO_PORTQ_AHB_LOCK_R    	EQU    0x40066520
@@ -86,6 +74,7 @@ GPIO_PORTK_AHB_PUR_R     	EQU    0x40061510
 GPIO_PORTK_AHB_DATA_R    	EQU    0x400613FC
 GPIO_PORTK               	EQU    2_000001000000000
 
+
 ; PORT J
 GPIO_PORTJ_AHB_LOCK_R    	EQU    0x40060520
 GPIO_PORTJ_AHB_CR_R      	EQU    0x40060524
@@ -102,7 +91,7 @@ GPIO_PORTJ_AHB_IBE_R		EQU    0x40060408
 GPIO_PORTJ_AHB_IEV_R        EQU    0x4006040C
 GPIO_PORTJ_AHB_ICR_R        EQU    0x4006041C
 GPIO_PORTJ               	EQU    2_000000100000000
-
+	
 ; PORT H
 GPIO_PORTH_AHB_LOCK_R    	EQU    0x4005F520
 GPIO_PORTH_AHB_CR_R      	EQU    0x4005F524
@@ -114,6 +103,8 @@ GPIO_PORTH_AHB_DEN_R     	EQU    0x4005F51C
 GPIO_PORTH_AHB_PUR_R     	EQU    0x4005F510	
 GPIO_PORTH_AHB_DATA_R    	EQU    0x4005F3FC
 GPIO_PORTH					EQU	   2_000000010000000
+	
+
 	
 GPIO_PORTN_AHB_LOCK_R    	EQU    0x40064520
 GPIO_PORTN_AHB_CR_R      	EQU    0x40064524
@@ -160,7 +151,6 @@ GPIO_Init
             LDR     R0, =SYSCTL_RCGCGPIO_R  		
 			MOV		R1, #GPIO_PORTL                 
 			ORR     R1, #GPIO_PORTM					
-			ORR     R1, #GPIO_PORTA
 			ORR     R1, #GPIO_PORTP
 			ORR     R1, #GPIO_PORTQ
 			ORR     R1, #GPIO_PORTK
@@ -173,7 +163,6 @@ GPIO_Init
 EsperaGPIO  LDR     R1, [R0]						
 			MOV     R2, #GPIO_PORTL                 
 			ORR     R2, #GPIO_PORTM                 
-			ORR     R1, #GPIO_PORTA
 			ORR     R1, #GPIO_PORTP
 			ORR     R1, #GPIO_PORTQ
 			ORR     R1, #GPIO_PORTK
@@ -189,8 +178,6 @@ EsperaGPIO  LDR     R1, [R0]
             STR     R1, [R0]						
             LDR     R0, =GPIO_PORTL_AHB_AMSEL_R		
             STR     R1, [R0]					    
-			LDR     R0, =GPIO_PORTA_AHB_AMSEL_R		
-            STR     R1, [R0]
 			LDR     R0, =GPIO_PORTP_AHB_AMSEL_R		
             STR     R1, [R0]
 			LDR     R0, =GPIO_PORTQ_AHB_AMSEL_R		
@@ -209,8 +196,6 @@ EsperaGPIO  LDR     R1, [R0]
             LDR     R0, =GPIO_PORTM_AHB_PCTL_R		
             STR     R1, [R0]                        
             LDR     R0, =GPIO_PORTL_AHB_PCTL_R      
-            STR     R1, [R0] 					    
-            LDR     R0, =GPIO_PORTA_AHB_PCTL_R		
             STR     R1, [R0] 					    
             LDR     R0, =GPIO_PORTP_AHB_PCTL_R		
             STR     R1, [R0]                       
@@ -231,10 +216,6 @@ EsperaGPIO  LDR     R1, [R0]
             LDR     R0, =GPIO_PORTM_AHB_DIR_R		
 			MOV 	R1, #2_111
 			STR     R1, [R0]						
-			
-			LDR     R0, =GPIO_PORTA_AHB_DIR_R
-			MOV     R1, #2_11110000
-            STR     R1, [R0]
 			LDR     R0, =GPIO_PORTP_AHB_DIR_R
 			MOV     R1, #2_100000
             STR     R1, [R0]
@@ -258,9 +239,7 @@ EsperaGPIO  LDR     R1, [R0]
             MOV     R1, #0x00						
             LDR     R0, =GPIO_PORTL_AHB_AFSEL_R		
             STR     R1, [R0]						
-            LDR     R0, =GPIO_PORTM_AHB_AFSEL_R     
-            STR     R1, [R0]                        
-			LDR     R0, =GPIO_PORTA_AHB_AFSEL_R     
+            LDR     R0, =GPIO_PORTM_AHB_AFSEL_R       
             STR     R1, [R0]
 			LDR     R0, =GPIO_PORTP_AHB_AFSEL_R     
             STR     R1, [R0]
@@ -282,10 +261,6 @@ EsperaGPIO  LDR     R1, [R0]
             LDR     R0, =GPIO_PORTM_AHB_DEN_R		
 			MOV     R1, #2_11110111                       
             STR     R1, [R0]                        
-
-			LDR     R0, =GPIO_PORTA_AHB_DEN_R		
-			MOV     R1, #2_11110000                       
-            STR     R1, [R0]
 			
 			LDR     R0, =GPIO_PORTP_AHB_DEN_R		
 			MOV     R1, #2_100000                         

@@ -1,12 +1,8 @@
 #include <stdint.h>
 #include "tm4c1294ncpdt.h"
 
-#define GPIO_PORTH  (0x80) //bit 8
-#define GPIO_PORTA  (0x1) //bit 1
-#define GPIO_PORTE  (0x10) //bit 5
-#define GPIO_PORTF  (0x20) //bit 6
-
-// aqui ta as config do UART, GPIO e Leds, ver oq falta do motor 
+//#define GPIO_PORTH  (0x80) //bit 8   
+#define GPIO_PORTA  (0x1)  //bit 1   
 
 void timer_init(void);
 void SysTick_Wait1ms(uint32_t delay);
@@ -64,9 +60,9 @@ void ConfigUART(void){
 			
 			
 		//Configura GPIO	
-		SYSCTL_RCGCGPIO_R = SYSCTL_RCGCGPIO_R | GPIO_PORTA | GPIO_PORTF | GPIO_PORTE;
+		SYSCTL_RCGCGPIO_R = SYSCTL_RCGCGPIO_R | GPIO_PORTA;
 			
-		while((SYSCTL_RCGCGPIO_R & (GPIO_PORTA|GPIO_PORTF|GPIO_PORTE) )!=(GPIO_PORTA|GPIO_PORTF|GPIO_PORTE)){}
+		while((SYSCTL_RCGCGPIO_R & (GPIO_PORTA) )!=(GPIO_PORTA)){}
 			
 		//GPIO UART
 		GPIO_PORTA_AHB_AMSEL_R = 0x00;
